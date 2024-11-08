@@ -21,5 +21,5 @@ public abstract class DAOGenerics<T> {
     public abstract void deleteOne(int codigo) throws SQLException;
     public abstract void updateOne(T obj) throws SQLException;
     public abstract T selectOne(int codigo) throws SQLException;
-    public abstract List<T> selectBundle(int codigo) throws SQLException;
+    public abstract List<T> selectAll() throws SQLException;
 }

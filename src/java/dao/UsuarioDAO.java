@@ -57,7 +57,7 @@ public class UsuarioDAO extends DAOGenerics<Usuario>{
     }
 
     @Override
-    public List<Usuario> selectBundle(int codigo) {
+    public List<Usuario> selectAll() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
