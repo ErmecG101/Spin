@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import vo.Usuario;
 import dao.UsuarioDAO;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
  *
@@ -33,6 +35,8 @@ public class UsuarioController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String status = "";
+        String message = "";
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -44,15 +48,33 @@ public class UsuarioController extends HttpServlet {
                     u.setSenha(request.getParameter("senha"));
                     u.setEmail(request.getParameter("email"));
                     //todo find a way to send data in String.
-//                    u.setDtNasc(new Date(Integer.parseInt(request.getParameter("dtNasc"))));
+                    u.setDtNasc(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataNasc")));
                     UsuarioDAO uDAO = new UsuarioDAO();
                     uDAO.insertOne(u);
+                    
+//                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    break;
+                default:
+                    status = "Erro: Inserir Usuario";
+                    message = "Erro inesperado ocorreu: ACAO INVALIDA";
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
                         
             }
         }catch(SQLException e){
             e.printStackTrace(System.err);
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
+            status = "Erro: Inserir Usuario";
+            message = "Erro relacionado a SQL da operação (SQLException)";
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+        }catch(ParseException e){
+            e.printStackTrace(System.err);
+            System.out.println("Erro data mal formatada!");
+            status = "Erro: Inserir Usuario";
+            message = "Erro relacionado a data, data mal formatada! (ParseException)";
+            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
         }
     }
 

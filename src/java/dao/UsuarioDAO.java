@@ -20,9 +20,9 @@ public class UsuarioDAO extends DAOGenerics<Usuario>{
     public void insertOne(Usuario obj) throws SQLException{
         try{
             StringBuilder sql = new StringBuilder();
-            sql.append("insert into usuario(nome, sha1(senha),")
+            sql.append("insert into usuario(nome, senha,")
             .append("email, dt_nasc, dt_criado, dt_atualizado) values")
-            .append("(?, ?, ?, ?, now(), now())");
+            .append("(?, sha1(?), ?, ?, now(), now())");
             stmt = Conexao.getConexao().prepareStatement(sql.toString());
             stmt.setString(1, obj.getNome());
             stmt.setString(2, obj.getSenha());

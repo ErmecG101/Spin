@@ -5,6 +5,8 @@
 package service;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.JDBCType;
 import java.sql.SQLException;
 
 /**
@@ -14,11 +16,13 @@ import java.sql.SQLException;
 public class Conexao {
     private static Connection conexao;
 
-    public static void openConnection(){
-        //todo openConnection()
+    public static void openConnection() throws ClassNotFoundException, SQLException{
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        
+        conexao = DriverManager.getConnection("jdbc:mysql://localhost/spin", "root", "");
     }
     
-    public static Connection getConexao() throws SQLException {
+    public static Connection getConexao() throws SQLException, ClassNotFoundException {
         if(conexao == null || conexao.isClosed());
             openConnection();
         return conexao;
