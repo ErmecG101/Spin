@@ -4,6 +4,7 @@
  */
 package dao;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,9 +18,9 @@ public abstract class DAOGenerics<T> {
     protected ResultSet rs;
     protected PreparedStatement stmt;
     
-    public abstract void insertOne(T obj) throws SQLException;
-    public abstract void deleteOne(int codigo) throws SQLException;
-    public abstract void updateOne(T obj) throws SQLException;
-    public abstract T selectOne(int codigo) throws SQLException;
-    public abstract List<T> selectAll() throws SQLException;
+    public abstract void insertOne(T obj) throws SQLException, ClassNotFoundException, IOException;
+    public abstract void deleteOne(int codigo) throws SQLException, ClassNotFoundException;
+    public abstract void updateOne(T obj) throws SQLException, ClassNotFoundException;
+    public abstract T selectOne(int codigo) throws SQLException, ClassNotFoundException;
+    public abstract List<T> selectAll() throws SQLException, ClassNotFoundException;
 }

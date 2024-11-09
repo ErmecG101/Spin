@@ -11,17 +11,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vo.Usuario;
-import dao.UsuarioDAO;
+
+import vo.Jogo;
+import dao.JogoDAO;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 /**
  *
- * @author arman
+ * @author Otavio
  */
-@WebServlet(name = "UsuarioController", urlPatterns = {"/UsuarioController"})
-public class UsuarioController extends HttpServlet {
+@WebServlet(name = "JogoController", urlPatterns = {"/JogoController"})
+public class JogoController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,18 +39,19 @@ public class UsuarioController extends HttpServlet {
         String message = "";
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             int operacao = Integer.parseInt(request.getParameter("acao"));
             switch(operacao){
                 case 1://InsertOne()
-                    Usuario u = new Usuario();
-                    u.setNome(request.getParameter("nome"));
-                    u.setSenha(request.getParameter("senha"));
-                    u.setEmail(request.getParameter("email"));
+                    Jogo j = new Jogo();
+                    j.setNome(request.getParameter("nome"));
+                    j.setValor(Double.parseDouble(request.getParameter("valor")));
+                    j.setPublicadoPor(request.getParameter("publicadopor"));
+                    j.setDesenvolvedora(request.getParameter("desenvolvedora"));
+                    j.setCapa(request.getParameter("capaEncoded"));
                     //todo find a way to send data in String.
-                    u.setDtNasc(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataNasc")));
-                    UsuarioDAO uDAO = new UsuarioDAO();
-                    uDAO.insertOne(u);
+                    j.setDataLancamento(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataLanc")));
+                    JogoDAO jDao = new JogoDAO();
+                    jDao.insertOne(j);
                     
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
@@ -64,20 +66,20 @@ public class UsuarioController extends HttpServlet {
         }catch(SQLException e){
             e.printStackTrace(System.err);
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
-            status = "Erro: Inserir Usuario";
+            status = "Erro: Inserir Jogo";
             message = "Erro relacionado a SQL da operação (SQLException)";
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
         }catch(ParseException e){
             e.printStackTrace(System.err);
             System.out.println("Erro data mal formatada!");
-            status = "Erro: Inserir Usuario";
+            status = "Erro: Inserir Jogo";
             message = "Erro relacionado a data, data mal formatada! (ParseException)";
             System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
-            status = "Erro: Inserir Usuario";
+            status = "Erro: Inserir Jogo";
             message = "Erro Desconhecido (Exception)";
             System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);

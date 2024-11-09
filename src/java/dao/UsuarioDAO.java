@@ -17,7 +17,7 @@ import vo.Usuario;
 public class UsuarioDAO extends DAOGenerics<Usuario>{
 
     @Override
-    public void insertOne(Usuario obj) throws SQLException{
+    public void insertOne(Usuario obj) throws SQLException, ClassNotFoundException{
         try{
             StringBuilder sql = new StringBuilder();
             sql.append("insert into usuario(nome, senha,")

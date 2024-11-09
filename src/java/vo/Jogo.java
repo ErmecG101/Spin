@@ -4,6 +4,7 @@
  */
 package vo;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -17,7 +18,7 @@ public class Jogo {
     private String publicadoPor;
     private String desenvolvedora;
     private Date dataLancamento;
-    private byte[] capa;
+    private String capa;
     private Date dtCriacao;
     private Date dtAtualizacao;
 
@@ -72,11 +73,11 @@ public class Jogo {
         this.dataLancamento = dataLancamento;
     }
 
-    public byte[] getCapa() {
+    public String getCapa() {
         return capa;
     }
 
-    public void setCapa(byte[] capa) {
+    public void setCapa(String capa) {
         this.capa = capa;
     }
 
