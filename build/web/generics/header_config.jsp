@@ -40,8 +40,6 @@
                         <a class="nav-link <%
                                 String uri = request.getRequestURI();
                                 String pageName = uri.substring(uri.lastIndexOf("/")+1);
-                                System.out.println("uri: "+uri);
-                                System.out.println("pageName: "+pageName);
                                 if(pageName.contains("index")){%> <%= "active" %> <%}%> aria-current="page" href="/Spin/index_release.jsp">Home</a>
                     </li>
                     <li class="nav-item">
