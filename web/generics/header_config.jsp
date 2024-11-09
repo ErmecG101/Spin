@@ -4,7 +4,21 @@
     Author     : Otavio
 --%>
 
+<%@page import="java.util.Base64"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="vo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+    Cookie[] cookies = request.getCookies();
+    Usuario u = new Usuario();
+    if(cookies != null){
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("spin_user_logged_in_object")){
+                u = new Gson().fromJson(new String(Base64.getDecoder().decode(cookie.getValue())), Usuario.class);
+            }
+        }
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,7 +37,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link <%
+                                String uri = request.getRequestURI();
+                                String pageName = uri.substring(uri.lastIndexOf("/")+1);
+                                System.out.println("uri: "+uri);
+                                System.out.println("pageName: "+pageName);
+                                if(pageName.contains("index")){%> <%= "active" %> <%}%> aria-current="page" href="/Spin/index_release.jsp">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Loja</a>
@@ -37,13 +56,28 @@
                 </ul>
                 <span class="nav-text dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="./icons/material/account_circle_24dp_E8EAED.svg"/>
-                            Guest
+                            <img src="/Spin/icons/material/account_circle_24dp_E8EAED.svg"/>
+                            <% if (u == null || u.getCodigoUsuario() == 0) {%>
+                            Bem vindo, Convidado!
+                            <%}else{  %>
+                            <%= "Bem vindo, "+u.getNome() %>
+                            <%} %>
                         </a>
+                        <% if(u == null || u.getCodigoUsuario() == 0) {%>
                         <ul class="dropdown-menu dropdown-menu-lg-end">
-                            <li><a class="dropdown-item" href="./telas/login.jsp">Sign-in</a></li>
-                            <li><a class="dropdown-item disabled" href="#">Sign-up</a></li>
+                            <li><a class="dropdown-item" href="/Spin/telas/login.jsp">Sign-in</a></li>
+                            <li><a class="dropdown-item" href="/Spin/telas/signup.jsp">Sign-up</a></li>
                         </ul>
+                        <% }else{ %>
+                        <ul class="dropdown-menu dropdown-menu-lg-end">
+                            <li><a class="dropdown-item disabled" href="./telas/login.jsp">Configurações</a></li>
+                            <li><a class="dropdown-item disabled" href="./telas/login.jsp">Compras</a></li>
+                            <li><a class="dropdown-item disabled" href="./telas/login.jsp">Biblioteca</a></li>
+                            <li><a class="dropdown-item" href="/Spin/telas/about.jsp">Sobre</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" id="logoff">Log-off</a></li>
+                        </ul>
+                        <%}%>
 
                 </span>
             </div>
@@ -90,6 +124,11 @@
             showToast(status, message);
         else
             console.log("Sem Mensagens a exibir."); 
+        
+        document.getElementById('logoff').addEventListener('click', () => {
+                logout();
+                location.reload();
+            });
         };
 
         function showToast(status, message){
@@ -99,6 +138,10 @@
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
             
             toastBootstrap.show();
+        }
+        
+        function logout(){
+            document.cookie = 'spin_user_logged_in_object'+'=; Max-Age=-99999999;';  
         }
         </script>
 </html>
