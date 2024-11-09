@@ -57,6 +57,28 @@ public class UsuarioDAO extends DAOGenerics<Usuario>{
     public Usuario selectOne(int codigo) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    public Usuario selectLogin(String email, String password) throws SQLException, ClassNotFoundException{
+        try{
+            StringBuilder sql = new StringBuilder();
+            sql.append("select * from usuario where email = ? and senha = sha1(?)");
+            
+            stmt = Conexao.getConexao().prepareStatement(sql.toString());
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            
+            rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                return new Usuario(rs);
+            }else{
+                return null;
+            }
+            
+        }finally{
+            closeDb();
+        }
+    }
 
     @Override
     public List<Usuario> selectAll() {

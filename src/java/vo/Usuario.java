@@ -4,6 +4,8 @@
  */
 package vo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -13,7 +15,7 @@ import java.util.Date;
 public class Usuario {
     private int CodigoUsuario;
     private String nome;
-    private String senha;
+    private transient String senha;
     private String email;
     private Date dtNasc;
     private Date dtCriado;
@@ -22,6 +24,15 @@ public class Usuario {
     public Usuario() {
     }
     
+    public Usuario(ResultSet rs) throws SQLException{
+        this.CodigoUsuario = rs.getInt("codigo_usuario");
+        this.nome = rs.getString("nome");
+        this.senha = rs.getString("senha");
+        this.email = rs.getString("email");
+        this.dtNasc = new Date(rs.getDate("dt_nasc").getTime());
+        this.dtCriado = new Date(rs.getDate("dt_criado").getTime());
+        this.dtAtualizado = new Date(rs.getDate("dt_atualizado").getTime());
+    }
     
 
     public int getCodigoUsuario() {

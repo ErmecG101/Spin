@@ -4,6 +4,7 @@
  */
 package controller;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,6 +17,8 @@ import dao.UsuarioDAO;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
+import javax.servlet.http.Cookie;
 /**
  *
  * @author arman
@@ -40,9 +43,10 @@ public class UsuarioController extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int operacao = Integer.parseInt(request.getParameter("acao"));
+            Usuario u;
             switch(operacao){
                 case 1://InsertOne()
-                    Usuario u = new Usuario();
+                    u = new Usuario();
                     u.setNome(request.getParameter("nome"));
                     u.setSenha(request.getParameter("senha"));
                     u.setEmail(request.getParameter("email"));
@@ -56,10 +60,27 @@ public class UsuarioController extends HttpServlet {
                     message = "Usuário cadastrado com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
-                default:
-                    status = "Erro: Inserir Usuario";
-                    message = "Erro inesperado ocorreu: ACAO INVALIDA";
+                case 2://Login()
+                    UsuarioDAO uDao = new UsuarioDAO();
+                    u = uDao.selectLogin(request.getParameter("email"), request.getParameter("senha"));
+                    if(u == null){
+                        status = "Conta não encontrada";
+                        message = "Uma conta com essas credenciais não foi encontrada, talvez você digitou a senha errada?";
+                        response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+                        break;
+                    }
+                    Cookie userCookie = new Cookie("spin_user_logged_in_object", Base64.getEncoder().encodeToString(new Gson().toJson(u).getBytes()));
+                    userCookie.setMaxAge(60*60*24);
+                    System.out.println(userCookie.getValue());
+                    response.addCookie(userCookie);
+                    status = "OK";
+                    message = "Login efetuado com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    break;
+                default:
+                    status = "Erro: Acao Inválida";
+                    message = "Erro inesperado ocorreu: ACAO INVALIDA";
+                    response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
                     break;
                         
             }
@@ -68,21 +89,21 @@ public class UsuarioController extends HttpServlet {
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Inserir Usuario";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
         }catch(ParseException e){
             e.printStackTrace(System.err);
             System.out.println("Erro data mal formatada!");
             status = "Erro: Inserir Usuario";
             message = "Erro relacionado a data, data mal formatada! (ParseException)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
             status = "Erro: Inserir Usuario";
             message = "Erro Desconhecido (Exception)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
         }
     }
 

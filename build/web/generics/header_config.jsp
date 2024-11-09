@@ -41,7 +41,7 @@
                             Guest
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg-end">
-                            <li><a class="dropdown-item disabled" href="#">Sign-in</a></li>
+                            <li><a class="dropdown-item" href="./telas/login.jsp">Sign-in</a></li>
                             <li><a class="dropdown-item disabled" href="#">Sign-up</a></li>
                         </ul>
 
