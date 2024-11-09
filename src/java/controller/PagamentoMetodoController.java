@@ -11,17 +11,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vo.Usuario;
-import dao.UsuarioDAO;
+
+import vo.PagamentoMetodo;
+import dao.PagamentoMetodoDAO;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 /**
  *
  * @author arman
  */
-@WebServlet(name = "UsuarioController", urlPatterns = {"/UsuarioController"})
-public class UsuarioController extends HttpServlet {
+@WebServlet(name = "PagamentoMetodoController", urlPatterns = {"/PagamentoMetodoController"})
+public class PagamentoMetodoController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,22 +42,18 @@ public class UsuarioController extends HttpServlet {
             int operacao = Integer.parseInt(request.getParameter("acao"));
             switch(operacao){
                 case 1://InsertOne()
-                    Usuario u = new Usuario();
-                    u.setNome(request.getParameter("nome"));
-                    u.setSenha(request.getParameter("senha"));
-                    u.setEmail(request.getParameter("email"));
-                    //todo find a way to send data in String.
-                    u.setDtNasc(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataNasc")));
-                    UsuarioDAO uDAO = new UsuarioDAO();
-                    uDAO.insertOne(u);
+                    PagamentoMetodo pM = new PagamentoMetodo();
+                    pM.setDescricao(request.getParameter("descricao"));
+                    PagamentoMetodoDAO pMDao = new PagamentoMetodoDAO();
+                    pMDao.insertOne(pM);
                     
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     status = "OK";
-                    message = "Usuário cadastrado com sucesso!";
+                    message = "Método de pagamento cadastrado com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
                 default:
-                    status = "Erro: Inserir Usuario";
+                    status = "Erro: Método de pagamento";
                     message = "Erro inesperado ocorreu: ACAO INVALIDA";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
@@ -66,20 +62,13 @@ public class UsuarioController extends HttpServlet {
         }catch(SQLException e){
             e.printStackTrace(System.err);
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
-            status = "Erro: Inserir Usuario";
+            status = "Erro: Metodo de pagamento";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-        }catch(ParseException e){
-            e.printStackTrace(System.err);
-            System.out.println("Erro data mal formatada!");
-            status = "Erro: Inserir Usuario";
-            message = "Erro relacionado a data, data mal formatada! (ParseException)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
-            status = "Erro: Inserir Usuario";
+            status = "Erro: Metodo de pagamento";
             message = "Erro Desconhecido (Exception)";
             System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);

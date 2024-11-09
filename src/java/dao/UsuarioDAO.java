@@ -38,6 +38,8 @@ public class UsuarioDAO extends DAOGenerics<Usuario>{
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Unknown Error: insertOneUser ");
+        }finally{
+            closeDb();
         }
     }
 

@@ -23,4 +23,15 @@ public abstract class DAOGenerics<T> {
     public abstract void updateOne(T obj) throws SQLException, ClassNotFoundException;
     public abstract T selectOne(int codigo) throws SQLException, ClassNotFoundException;
     public abstract List<T> selectAll() throws SQLException, ClassNotFoundException;
+    
+    protected void closeDb() throws SQLException{
+        if(rs != null && !rs.isClosed()){
+            rs.close();
+            rs = null;
+        }
+        if(stmt != null && !stmt.isClosed()){
+            stmt.close();
+            stmt = null;
+        }
+    }
 }

@@ -14,38 +14,24 @@
                     Isso Ã© uma Build de DEBUG!
                 </div>
             <div class="d-flex justify-content-center">
-                Inserir Usuario:
+                Inserir Dados de Pagamento:
             </div>
         
         <!--todo make validations.-->
-        <form name="frm" method="post" class="needs-validation" action="../UsuarioController?acao=1" novalidate>
+        <form name="frm" method="post" class="needs-validation" action="../PagamentoDadosController?acao=1" novalidate>
             
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1"><image src="../icons/material/account_circle_24dp_E8EAED.svg"/></span>
-            <input type="text" class="form-control" placeholder="Nome" aria-label="Nome" aria-describedby="basic-addon1" id="nome" name="nome" required>
+            <input type="text" class="form-control" placeholder="Usuario" aria-label="Usuario" aria-describedby="basic-addon1" id="usuario" name="usuario" required>
             <div class="invalid-feedback">
-                Nome obrigatório
+                Usuário (id) obrigatório
             </div>
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"><image src="../icons/material/lock_24dp_E8EAED.svg"/></span>
-            <input type="password" class="form-control" placeholder="Senha" aria-label="Senha" aria-describedby="basic-addon1" id="senha" name="senha" required>
+            <span class="input-group-text" id="basic-addon1"><image src="../icons/material/file_json_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"/></span>
+            <input type="text" class="form-control" placeholder="Dados de Pagamento" aria-label="Dados de Pagamento" aria-describedby="basic-addon1" id="dadosCompra" name="dadosCompra" required>
             <div class="invalid-feedback">
-                Senha obrigatória
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"><image src="../icons/material/alternate_email_24dp_E8EAED.svg"/></span>
-            <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" id="email" name="email" required>
-            <div class="invalid-feedback">
-                Email obrigatório
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"><image src="../icons/material/calendar_today_24dp_E8EAED.svg"/></span>
-            <input type="date" class="form-control" placeholder="Data" aria-label="Data" aria-describedby="basic-addon1" id="dataNasc" name="dataNasc" required>
-            <div class="invalid-feedback">
-                Data de Nascimento obrigatório
+                Dados de Pagamento (JSON) obrigatório
             </div>
         </div>
         <br><br>

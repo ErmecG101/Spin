@@ -4,39 +4,33 @@
  */
 package dao;
 
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Base64;
 import java.util.List;
 import service.Conexao;
-import vo.Jogo;
+import vo.PagamentoDados;
+
 /**
  *
  * @author arman
  */
-public class JogoDAO extends DAOGenerics<Jogo>{
+public class PagamentoDadosDAO extends DAOGenerics<PagamentoDados> {
 
     @Override
-    public void insertOne(Jogo obj) throws SQLException, ClassNotFoundException, IOException{
+    public void insertOne(PagamentoDados obj) throws SQLException, ClassNotFoundException, IOException {
         try{
             StringBuilder sql = new StringBuilder();
-        sql.append("insert into jogos(nome, valor, publicadopor, desenvolvedora, data_de_lancamento, capa, dt_atualizacao, dt_criacao) values")
-                .append(" (?,?,?,?,?,?, now(), now());");
-        
+        sql.append("insert into pagamentos_dados(cod_usuario, dados_compra,dt_criado, dt_atualizado)")
+                .append(" values(?,?,now(),now())");
         stmt = Conexao.getConexao().prepareStatement(sql.toString());
-        stmt.setString(1, obj.getNome());
-        stmt.setDouble(2, obj.getValor());
-        stmt.setString(3, obj.getPublicadoPor());
-        stmt.setString(4, obj.getDesenvolvedora());
-        stmt.setDate(5, new Date(obj.getDataLancamento().getTime()));
-        stmt.setString(6, obj.getCapa());
+        
+        stmt.setInt(1, obj.getUsuario().getCodigoUsuario());
+        stmt.setString(2, obj.getDadosCompra());
         
         int result = stmt.executeUpdate();
+        
         if(result <= 0)
-            throw new SQLException("Erro ao inserir jogo no banco. (Jogo.insertOne())");
+            throw new SQLException("Erro ao inserir PagamentoDados no banco. (PagamentoDadosDAO.insertOne())");
         else
             System.out.println("Row added successfully!");
         }finally{
@@ -50,17 +44,17 @@ public class JogoDAO extends DAOGenerics<Jogo>{
     }
 
     @Override
-    public void updateOne(Jogo obj) throws SQLException, ClassNotFoundException {
+    public void updateOne(PagamentoDados obj) throws SQLException, ClassNotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Jogo selectOne(int codigo) throws SQLException, ClassNotFoundException {
+    public PagamentoDados selectOne(int codigo) throws SQLException, ClassNotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public List<Jogo> selectAll() throws SQLException, ClassNotFoundException {
+    public List<PagamentoDados> selectAll() throws SQLException, ClassNotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

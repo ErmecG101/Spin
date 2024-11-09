@@ -47,17 +47,19 @@ public class JogoController extends HttpServlet {
                     j.setValor(Double.parseDouble(request.getParameter("valor")));
                     j.setPublicadoPor(request.getParameter("publicadopor"));
                     j.setDesenvolvedora(request.getParameter("desenvolvedora"));
-                    j.setCapa(request.getParameter("capaEncoded"));
+                    j.setCapa(request.getParameter("capaBase64"));
                     //todo find a way to send data in String.
                     j.setDataLancamento(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataLanc")));
                     JogoDAO jDao = new JogoDAO();
                     jDao.insertOne(j);
                     
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
+                    status="OK";
+                    message="Jogo inserido com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
                 default:
-                    status = "Erro: Inserir Usuario";
+                    status = "Erro: Inserir Jogo";
                     message = "Erro inesperado ocorreu: ACAO INVALIDA";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;

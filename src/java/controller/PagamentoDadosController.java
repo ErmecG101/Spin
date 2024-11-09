@@ -4,24 +4,26 @@
  */
 package controller;
 
+import dao.PagamentoDadosDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import vo.Usuario;
-import dao.UsuarioDAO;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import vo.PagamentoDados;
+
 /**
  *
  * @author arman
  */
-@WebServlet(name = "UsuarioController", urlPatterns = {"/UsuarioController"})
-public class UsuarioController extends HttpServlet {
+@WebServlet(name = "PagamentoDadosController", urlPatterns = {"/PagamentoDadosController"})
+public class PagamentoDadosController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,22 +44,21 @@ public class UsuarioController extends HttpServlet {
             int operacao = Integer.parseInt(request.getParameter("acao"));
             switch(operacao){
                 case 1://InsertOne()
+                    PagamentoDados pD = new PagamentoDados();
                     Usuario u = new Usuario();
-                    u.setNome(request.getParameter("nome"));
-                    u.setSenha(request.getParameter("senha"));
-                    u.setEmail(request.getParameter("email"));
-                    //todo find a way to send data in String.
-                    u.setDtNasc(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataNasc")));
-                    UsuarioDAO uDAO = new UsuarioDAO();
-                    uDAO.insertOne(u);
+                    u.setCodigoUsuario(Integer.parseInt(request.getParameter("usuario")));
+                    pD.setUsuario(u);
+                    pD.setDadosCompra(request.getParameter("dadosCompra"));
+                    PagamentoDadosDAO pDDao = new PagamentoDadosDAO();
+                    pDDao.insertOne(pD);
                     
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     status = "OK";
-                    message = "Usuário cadastrado com sucesso!";
+                    message = "Dados de Pagamento cadastrados com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
                 default:
-                    status = "Erro: Inserir Usuario";
+                    status = "Erro: Dados de Pagamento";
                     message = "Erro inesperado ocorreu: ACAO INVALIDA";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
@@ -66,20 +67,13 @@ public class UsuarioController extends HttpServlet {
         }catch(SQLException e){
             e.printStackTrace(System.err);
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
-            status = "Erro: Inserir Usuario";
+            status = "Erro: Dados de Pagamento";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-        }catch(ParseException e){
-            e.printStackTrace(System.err);
-            System.out.println("Erro data mal formatada!");
-            status = "Erro: Inserir Usuario";
-            message = "Erro relacionado a data, data mal formatada! (ParseException)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
-            status = "Erro: Inserir Usuario";
+            status = "Erro: Dados de Pagamento";
             message = "Erro Desconhecido (Exception)";
             System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
