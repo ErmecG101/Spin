@@ -6,10 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html data-bs-theme="auto">
+<html data-bs-theme="dark">
         <jsp:include page="./generics/header_config.jsp"/>
     <body>
-        
+        <i class="bi-alarm"></i>
         <h1>Hello World1!</h1>
         <h1>Hello World2!</h1>
         <h1>Hello World3!</h1>
