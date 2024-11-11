@@ -9,7 +9,7 @@
 <html>
     <jsp:include page="../generics/header_config_nonav.jsp"/>
     <body>
-        <form action="../UsuarioController?acao=1" class="needs-validation" novalidate method="post"> 
+        <form action="../UsuarioController?acao=1" method="post"> 
             <div class="mx-auto text-center" style="width: 30%">     
                 <div class="mx-auto text-center" style="width: 80%">    
             <img class="mb-4" src=""  alt="logo" width="72" height="57" style="margin-top: 10%">
@@ -75,7 +75,30 @@
                             form.classList.add('was-validated');
                         }, false);
                     });
+                    
+                    setTheme(getPreferredTheme())
             };
+            
+        const getStoredTheme = () => localStorage.getItem('theme')
+        const setStoredTheme = theme => localStorage.setItem('theme', theme)
+
+        const getPreferredTheme = () => {
+          const storedTheme = getStoredTheme()
+          if (storedTheme) {
+            return storedTheme
+          }
+
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+
+        const setTheme = theme => {
+          if (theme === 'auto') {
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+          } else {
+            document.documentElement.setAttribute('data-bs-theme', theme)
+          }
+          setStoredTheme(theme);
+        }
         </script>
     </body>
 </html>

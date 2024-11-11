@@ -53,11 +53,31 @@
                         <a class="nav-link disabled" href="#">Configurações</a>
                     </li>
                 </ul>
-                    <span class="nav_text">
-                        <button class="btn" style="margin-right: 8px">
-                        <i class="bi bi-moon-fill"></i>
-                        </button>
-                    </span>
+                    <span class="nav_text dropdown" style="margin-right: 10px">
+                    <button class="nav-link dropdown-toggle" id="bd-theme" data-bs-toggle="dropdown" type="button" >
+                        <i class="bi" id="activeTheme"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+                        <li>
+                            <button type="button" class="dropdown-item" onclick="setTheme('light')" data-bs-theme-value="light">
+                                <i class="bi bi-sun-fill"></i>
+                                Claro
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item" onclick="setTheme('dark')" data-bs-theme-value="dark">
+                                <i class="bi bi-moon-fill"></i>
+                                Escuro
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item" onclick="setTheme('auto')" data-bs-theme-value="dark">
+                                <i class="bi bi-circle-half"></i>
+                                Auto
+                            </button>
+                        </li>
+                    </ul>
+                </span>
                 <span class="nav-text dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <!--<img src="/Spin/icons/material/account_circle_24dp_E8EAED.svg"/>-->
@@ -80,7 +100,7 @@
                             <li><a class="dropdown-item disabled" href="./telas/login.jsp">Biblioteca</a></li>
                             <li><a class="dropdown-item" href="/Spin/telas/about.jsp">Sobre</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" id="logoff">Log-off</a></li>
+                            <li><a class="dropdown-item" id="logoff" onclick="logout()">Log-off</a></li>
                         </ul>
                         <%}%>
 
@@ -95,7 +115,7 @@
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-                <img src="..." class="rounded me-2" id="toast-icon" alt="...">
+                <!--<img src="..." class="rounded me-2" id="toast-icon" alt="...">-->
                 <strong class="me-auto" id="toast-status">Bootstrap</strong>
                 <!--<small>11 mins ago</small>-->
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -130,11 +150,8 @@
         else
             console.log("Sem Mensagens a exibir."); 
         
-        document.getElementById('logoff').addEventListener('click', () => {
-                logout();
-                location.reload();
-            });
-        };
+            setTheme(getPreferredTheme())
+        }
 
         function showToast(status, message){
             const toastLiveExample = document.getElementById('liveToast');
@@ -147,6 +164,49 @@
         
         function logout(){
             document.cookie = 'spin_user_logged_in_object'+'=; Max-Age=-99999999;';  
+            location.reload();
         }
-        </script>
+
+        const getStoredTheme = () => localStorage.getItem('theme')
+        const setStoredTheme = theme => localStorage.setItem('theme', theme)
+
+        const getPreferredTheme = () => {
+          const storedTheme = getStoredTheme()
+          if (storedTheme) {
+            return storedTheme
+          }
+
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+
+        const setTheme = theme => {
+          if (theme === 'auto') {
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+          } else {
+            document.documentElement.setAttribute('data-bs-theme', theme)
+          }
+          setStoredTheme(theme);
+
+          toggleIcon(theme);
+
+
+        }
+
+        const toggleIcon = icon => {
+             if(icon === 'light'){
+                 if(document.getElementById('activeTheme').classList.contains('bi-moon-fill'))
+                     document.getElementById('activeTheme').classList.toggle('bi-moon-fill');
+                 if(!document.getElementById('activeTheme').classList.contains('bi-sun-fill'))
+                     document.getElementById('activeTheme').classList.toggle('bi-sun-fill')        
+          }else if(icon === "dark"){
+                  if(!document.getElementById('activeTheme').classList.contains('bi-moon-fill'))
+                     document.getElementById('activeTheme').classList.toggle('bi-moon-fill');
+                 if(document.getElementById('activeTheme').classList.contains('bi-sun-fill'))
+                     document.getElementById('activeTheme').classList.toggle('bi-sun-fill')
+          }else{
+              toggleIcon(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          }
+        }
+    </script>
+
 </html>

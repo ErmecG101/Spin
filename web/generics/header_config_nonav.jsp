@@ -17,7 +17,7 @@
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-                <img src="..." class="rounded me-2" id="toast-icon" alt="...">
+                <!--<img src="..." class="rounded me-2" id="toast-icon" alt="...">-->
                 <strong class="me-auto" id="toast-status">Bootstrap</strong>
                 <!--<small>11 mins ago</small>-->
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -51,6 +51,8 @@
             showToast(status, message);
         else
             console.log("Sem Mensagens a exibir."); 
+        
+            setTheme(getPreferredTheme())
         };
 
         function showToast(status, message){
@@ -60,6 +62,26 @@
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
             
             toastBootstrap.show();
+        }
+        const getStoredTheme = () => localStorage.getItem('theme')
+        const setStoredTheme = theme => localStorage.setItem('theme', theme)
+
+        const getPreferredTheme = () => {
+          const storedTheme = getStoredTheme()
+          if (storedTheme) {
+            return storedTheme
+          }
+
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+
+        const setTheme = theme => {
+          if (theme === 'auto') {
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+          } else {
+            document.documentElement.setAttribute('data-bs-theme', theme)
+          }
+          setStoredTheme(theme);
         }
         </script>
 </html>

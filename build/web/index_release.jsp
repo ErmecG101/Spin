@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html data-bs-theme="dark">
+<html>
         <jsp:include page="./generics/header_config.jsp"/>
     <body>
         <i class="bi-alarm"></i>
