@@ -18,6 +18,9 @@
             }
         }
     }
+    
+    String uri;
+    String pageName;
 %>
 <!DOCTYPE html>
 <html>
@@ -39,12 +42,15 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
                     <li class="nav-item">
                         <a class="nav-link <%
-                                String uri = request.getRequestURI();
-                                String pageName = uri.substring(uri.lastIndexOf("/")+1);
+                                uri = request.getRequestURI();
+                                pageName = uri.substring(uri.lastIndexOf("/")+1);
                                 if(pageName.contains("index")){%> <%= "active" %> <%}%> aria-current="page" href="/Spin/index_release.jsp">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Loja</a>
+                        <a class="nav-link <%
+                                uri = request.getRequestURI();
+                                pageName = uri.substring(uri.lastIndexOf("/")+1);
+                                if(pageName.contains("loja")){%> <%= "active" %> <%}%>" href="/Spin/telas/loja.jsp">Loja</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Biblioteca</a>
