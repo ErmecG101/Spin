@@ -59,6 +59,11 @@
                         <a class="nav-link disabled" href="#">Configurações</a>
                     </li>
                 </ul>
+                    <form class="d-flex" method="GET" action="/Spin/telas/loja.jsp" role="search" style="margin-right: 10px;">
+                        <input class="form-control me-2" type="search" id="search" name="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                    <label class="nav_text" style="font-size: 20px; margin-right: 10px">|</label>
                     <span class="nav_text dropdown" style="margin-right: 10px">
                     <button class="nav-link dropdown-toggle" id="bd-theme" data-bs-toggle="dropdown" type="button" >
                         <i class="bi" id="activeTheme"></i>

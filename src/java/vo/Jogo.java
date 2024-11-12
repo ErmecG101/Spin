@@ -5,6 +5,8 @@
 package vo;
 
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -22,6 +24,20 @@ public class Jogo {
     private Date dtCriacao;
     private Date dtAtualizacao;
 
+    public Jogo(ResultSet rs) throws SQLException{
+        this.codigoJogo = rs.getInt("codigo_jogo");
+        this.nome = rs.getString("nome");
+        this.valor = rs.getDouble("valor");
+        this.publicadoPor = rs.getString("publicadopor");
+        this.desenvolvedora = rs.getString("desenvolvedora");
+        this.dataLancamento = new Date(rs.getDate("data_de_lancamento").getTime());
+        this.capa = rs.getString("capa");
+        this.dtCriacao = new Date(rs.getDate("dt_criacao").getTime());
+        this.dtAtualizacao = new Date(rs.getDate("dt_atualizacao").getTime());
+    }
+
+    
+    
     public Jogo() {
     } 
     

@@ -29,7 +29,7 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1"><image src="../icons/material/attach_money_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"/></span>
-            <input type="number" class="form-control" placeholder="Valor" aria-label="Valor" aria-describedby="basic-addon1" id="valor" name="valor" required>
+            <input type="number" step=".01" class="form-control" placeholder="Valor" aria-label="Valor" aria-describedby="basic-addon1" id="valor" name="valor" required>
             <div class="invalid-feedback">
                 Valor obrigatório
             </div>

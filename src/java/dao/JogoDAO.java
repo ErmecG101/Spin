@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import service.Conexao;
@@ -61,7 +62,21 @@ public class JogoDAO extends DAOGenerics<Jogo>{
 
     @Override
     public List<Jogo> selectAll() throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            List<Jogo> list = new ArrayList<>();
+            String sql = "select * from jogos";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                list.add(new Jogo(rs));
+            }
+            
+            return list;
+        }finally{
+            closeDb();
+        }
     }
     
 }
