@@ -24,6 +24,10 @@ public class Jogo {
     private Date dtCriacao;
     private Date dtAtualizacao;
 
+    public Jogo(int codigoJogo) {
+        this.codigoJogo = codigoJogo;
+    }
+    
     public Jogo(ResultSet rs) throws SQLException{
         this.codigoJogo = rs.getInt("codigo_jogo");
         this.nome = rs.getString("nome");

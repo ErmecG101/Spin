@@ -23,6 +23,12 @@ public class Usuario {
 
     public Usuario() {
     }
+
+    public Usuario(int CodigoUsuario) {
+        this.CodigoUsuario = CodigoUsuario;
+    }
+    
+    
     
     public Usuario(ResultSet rs) throws SQLException{
         this.CodigoUsuario = rs.getInt("codigo_usuario");

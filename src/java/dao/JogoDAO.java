@@ -47,17 +47,46 @@ public class JogoDAO extends DAOGenerics<Jogo>{
 
     @Override
     public void deleteOne(int codigo) throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            String sql = "delete from jogos where codigo_jogo = ?";
+            stmt = Conexao.getConexao().prepareCall(sql);
+            stmt.setInt(1, codigo);
+            
+            int result = stmt.executeUpdate();
+            if(result <= 0)
+                throw new SQLException("Erro ao deletar o registro. Jogo.deleteOne()");
+            else
+                System.out.println("Jogo de ID: "+codigo+" apagado com sucesso.");
+        }finally{
+            closeDb();
+        }
     }
 
     @Override
     public void updateOne(Jogo obj) throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+//            String sql = "update from jogos set nome = ? , valor = ? , publicadopor = ?, desenvolvedora = ?, data_de_lancamento = ?, "
+        }finally{
+            closeDb();
+        }
     }
 
     @Override
     public Jogo selectOne(int codigo) throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            String sql = "select * from jogos where codigo_jogo = ?";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            stmt.setInt(1 , codigo);
+            
+            rs = stmt.executeQuery();
+            
+            if(rs.next())
+                return new Jogo(rs);
+            else
+                return null;
+        }finally{
+            closeDb();
+        }
     }
 
     @Override

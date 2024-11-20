@@ -17,6 +17,9 @@ import dao.JogoDAO;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import vo.CompraCarrinho;
+import vo.Usuario;
+import dao.CompraCarrinhoDAO;
 /**
  *
  * @author Otavio
@@ -57,6 +60,24 @@ public class JogoController extends HttpServlet {
                     status="OK";
                     message="Jogo inserido com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    break;
+                case 2://Add To Cart()
+                    Jogo jogo = new JogoDAO().selectOne(Integer.parseInt(request.getParameter("action_add_jogo")));
+                    CompraCarrinho cc = new CompraCarrinho();
+                    cc.setJogo(jogo);
+                    Usuario u = (Usuario) request.getSession().getAttribute("spin_user_logged_in_object");
+                    if(u == null || u.getCodigoUsuario() <= 0){
+                        status = "Aviso!";
+                        message = "É necessário um login para adicionar o jogo ao carrinho.";
+                        response.sendRedirect("./telas/login.jsp?status="+status+"&message="+message+"&backurl=./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo());
+                        break;
+                    }
+                    cc.setUsuario(u);
+                    CompraCarrinhoDAO ccDao = new CompraCarrinhoDAO();
+                    ccDao.insertOne(cc);
+                    status="OK";
+                    message="Item adicionado no carrinho com sucesso!";
+                    response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+status+"&message="+message);
                     break;
                 default:
                     status = "Erro: Inserir Jogo";

@@ -4,6 +4,9 @@
  */
 package vo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author arman
@@ -12,9 +15,14 @@ public class CompraCarrinho {
     private int codigoCompraCarrinho;
     private Jogo jogo;
     private Usuario usuario;
-    private Compra compra;
 
     public CompraCarrinho() {
+    }
+    
+    public CompraCarrinho(ResultSet rs) throws SQLException{
+        this.codigoCompraCarrinho = rs.getInt("codigo_compra_carrinho");
+        this.jogo = new Jogo(rs.getInt("cod_jogo"));
+        this.usuario = new Usuario(rs.getInt("cod_usuario"));
     }
     
     public int getCodigoCompraCarrinho() {
@@ -40,14 +48,4 @@ public class CompraCarrinho {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
-    public Compra getCompra() {
-        return compra;
-    }
-
-    public void setCompra(Compra compra) {
-        this.compra = compra;
-    }
-    
-    
 }

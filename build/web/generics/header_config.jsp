@@ -4,21 +4,31 @@
     Author     : Otavio
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="java.util.Base64"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="vo.Usuario"%>
+<%@page import="vo.CompraCarrinho"%>
+<%@page import="dao.CompraCarrinhoDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
-    Cookie[] cookies = request.getCookies();
-    Usuario u = new Usuario();
-    if(cookies != null){
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("spin_user_logged_in_object")){
-                u = new Gson().fromJson(new String(Base64.getDecoder().decode(cookie.getValue())), Usuario.class);
-            }
-        }
-    }
+    //Cookie[] cookies = request.getCookies();
     
+    Usuario u = (Usuario) request.getSession(true).getAttribute("spin_user_logged_in_object");
+//    if(cookies != null){
+//        for(Cookie cookie : cookies){
+//            if(cookie.getName().equals("spin_user_logged_in_object")){
+//                u = new Gson().fromJson(new String(Base64.getDecoder().decode(cookie.getValue())), Usuario.class);
+//            }
+//        }
+//    }
+//    
+    List<CompraCarrinho> itensCarrinho;
+    if(u != null && u.getCodigoUsuario() > 0)
+        itensCarrinho = new CompraCarrinhoDAO().selectAllByUser(u.getCodigoUsuario());
+    else
+        itensCarrinho = new ArrayList<CompraCarrinho>();
     String uri;
     String pageName;
 %>
@@ -26,7 +36,7 @@
 <html>
     <head>
         <title>Spin</title>
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -111,10 +121,28 @@
                             <li><a class="dropdown-item disabled" href="./telas/login.jsp">Biblioteca</a></li>
                             <li><a class="dropdown-item" href="/Spin/telas/about.jsp">Sobre</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" id="logoff" onclick="logout()">Log-off</a></li>
+                            <li><a class="dropdown-item" id="logoff" href="/Spin/UsuarioController?acao=3">Log-off</a></li>
                         </ul>
                         <%}%>
 
+                </span>
+                        <span class="nav-text dropdown" style="margin-left: 10px">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-cart-fill"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" style="max-height: 400px; width: 400px; overflow-y: scroll;">
+                            <% if (u == null || u.getCodigoUsuario() == 0) {%>
+                            <li><a class="dropdown-item" href="/Spin/telas/login.jsp">Login necessário para listar items no seu carrinho</a></li>
+                            <%}else{ 
+                            for(CompraCarrinho item : itensCarrinho){
+                            %>
+                            <h2><%= item.getCodigoCompraCarrinho()%></h2>
+                            <%}%>
+                            
+                            <li><hr class="dropdown-divider"></li>
+                            <li><span class="dropdown-item-text"><div class="row"><button class="btn">Ver Mais</button></div></span></li>
+                            <%} %>
+                        </ul>
                 </span>
             </div>
         </div>
@@ -173,10 +201,6 @@
             toastBootstrap.show();
         }
         
-        function logout(){
-            document.cookie = 'spin_user_logged_in_object'+'=; Max-Age=-99999999;';  
-            location.reload();
-        }
 
         const getStoredTheme = () => localStorage.getItem('theme')
         const setStoredTheme = theme => localStorage.setItem('theme', theme)

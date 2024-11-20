@@ -69,13 +69,19 @@ public class UsuarioController extends HttpServlet {
                         response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
                         break;
                     }
-                    Cookie userCookie = new Cookie("spin_user_logged_in_object", Base64.getEncoder().encodeToString(new Gson().toJson(u).getBytes()));
-                    userCookie.setMaxAge(60*60*24);
-                    System.out.println(userCookie.getValue());
-                    response.addCookie(userCookie);
+                    request.getSession(true).setAttribute("spin_user_logged_in_object", u);
                     status = "OK";
                     message = "Login efetuado com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    if(request.getParameter("url").equals("index_release.jsp"))
+                        response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    else
+                        response.sendRedirect("./"+request.getParameter("url")+"&status="+status+"&message="+message);
+                    break;
+                case 3://logoff
+                    request.getSession().invalidate();
+                    status = "OK";
+                    message = "Logoff realizado com sucesso!";
+                    response.sendRedirect("./index_release.jsp?status="+status+"&message="+message);
                     break;
                 default:
                     status = "Erro: Acao Inválida";
