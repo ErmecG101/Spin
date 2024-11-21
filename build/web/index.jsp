@@ -1,42 +1,35 @@
+<%-- 
+    Document   : index_release
+    Created on : 9 de nov. de 2024, 01:56:16
+    Author     : arman
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
-    <jsp:include page="./generics/header_config_debug.jsp"/>
+        <jsp:include page="./generics/header_config.jsp"/>
     <body>
-        <div class="mx-auto" style="width: 80%">     
-            <div class="d-flex justify-content-center">
-                <h1>Bem Vindo a SPIN (DEBUG)</h1>
-            </div>
-            <div class="d-flex justify-content-center">
-                <div class="column">
-                    <div>
-                        <a href="./debug/usuario_insert.jsp">
-                            <button class="btn btn-primary">Usuario</button>
-                        </a> 
-                        <a href="./debug/jogo_insert.jsp">
-                            <button class="btn btn-primary">Jogos</button>
-                        </a> 
-                        <a href="./debug/dados_pagamento_insert.jsp">
-                            <button class="btn btn-primary">Pagamento Dados</button>
-                        </a> 
-                    </div>
-                    <br>
-                    <div>
-                        <a href="./debug/metodo_pagamento_insert.jsp">
-                            <button class="btn btn-primary">Pagamento Metodo</button>
-                        </a> 
-                        <a href="">
-                            <button class="btn btn-primary" disabled>Compra Carrinho</button>
-                        </a> 
-                        <a href="">
-                            <button class="btn btn-primary" disabled>Compra</button>
-                        </a> 
-                    </div>
-                </div>
-            </div>     
-        </div>
+        <i class="bi-alarm"></i>
+        <h1>Hello World1!</h1>
+        <h1>Hello World2!</h1>
+        <h1>Hello World3!</h1>
+        <h1>Hello World4!</h1>
+        <h1>Hello World5!</h1>
+        <h1>Hello World6!</h1><h1>Hello World!</h1>
+        <h1>Hello World7!</h1>
+        <h1>Hello World8!</h1>
+        <h1>Hello World9!</h1>
+        <h1>Hello World10!</h1>
+        <h1>Hello World!</h1>
+        <h1>Hello World!</h1>
+        <h1>Hello World!</h1>
+        <h1>Hello World!</h1>
+        <h1>Hello World!</h1>
+        <h1>Hello World!</h1>
+        <h1>Hello World!</h1>
+        <h1>Hello World!</h1><h1>Hello World!</h1>
+        
+        
+        
     </body>
 </html>

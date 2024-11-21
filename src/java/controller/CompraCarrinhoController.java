@@ -6,6 +6,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.text.ParseException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,20 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import vo.Jogo;
-import dao.JogoDAO;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import vo.CompraCarrinho;
 import vo.Usuario;
 import dao.CompraCarrinhoDAO;
 import java.util.List;
+
 /**
  *
- * @author Otavio
+ * @author arman
  */
-@WebServlet(name = "JogoController", urlPatterns = {"/JogoController"})
-public class JogoController extends HttpServlet {
+@WebServlet(name = "CompraCarrinhoController", urlPatterns = {"/CompraCarrinhoController"})
+public class CompraCarrinhoController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,70 +43,26 @@ public class JogoController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             int operacao = Integer.parseInt(request.getParameter("acao"));
-            switch(operacao){
-                case 1://InsertOne()
-                    Jogo j = new Jogo();
-                    j.setNome(request.getParameter("nome"));
-                    j.setValor(Double.parseDouble(request.getParameter("valor")));
-                    j.setPublicadoPor(request.getParameter("publicadopor"));
-                    j.setDesenvolvedora(request.getParameter("desenvolvedora"));
-                    j.setCapa(request.getParameter("capaBase64"));
-                    //todo find a way to send data in String.
-                    j.setDataLancamento(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataLanc")));
-                    JogoDAO jDao = new JogoDAO();
-                    jDao.insertOne(j);
-                    
-//                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
-                    status="OK";
-                    message="Jogo inserido com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-                    break;
-                case 2://Add To Cart()
-                    Jogo jogo = new JogoDAO().selectOne(Integer.parseInt(request.getParameter("action_add_jogo")));
-                    CompraCarrinho cc = new CompraCarrinho();
-                    cc.setCodigoCompraCarrinho(0);
-                    cc.setJogo(jogo);
-                    Usuario u = (Usuario) request.getSession().getAttribute("spin_user_logged_in_object");
-                    if(u == null || u.getCodigoUsuario() <= 0){
-                        status = "Aviso!";
-                        message = "É necessário um login para adicionar o jogo ao carrinho.";
-                        response.sendRedirect("./telas/login.jsp?status="+status+"&message="+message+"&backurl=./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo());
-                        break;
-                    }
-                    cc.setUsuario(u);
+            switch (operacao) {
+                case 1://Remover Item do Carrinho
                     CompraCarrinhoDAO ccDao = new CompraCarrinhoDAO();
-                    if(ccDao.alreadyInCart(u.getCodigoUsuario(), jogo.getCodigoJogo())){
-                        status="Alerta";
-                        message="Jogo já no seu carrinho.";
-                        response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+status+"&message="+message);
-                        break;
-                    }
-                    ccDao.insertOne(cc);
+                    CompraCarrinho cc = ccDao.selectOne(Integer.parseInt(request.getParameter("item_to_delete")));
+                    ccDao.deleteOne(Integer.parseInt(request.getParameter("item_to_delete")));
+                    Usuario u = (Usuario) request.getSession().getAttribute("spin_user_logged_in_object");
                     List<CompraCarrinho> itensCarrinho = new CompraCarrinhoDAO().selectAllByUser(u.getCodigoUsuario());
                     request.getSession().setAttribute("itens_carrinho_spin", itensCarrinho);
-                    status="OK";
-                    message="Item adicionado no carrinho com sucesso!";
-                    response.sendRedirect("./telas/loja.jsp?status="+status+"&message="+message);
-                    break;
-                default:
-                    status = "Erro: Inserir Jogo";
-                    message = "Erro inesperado ocorreu: ACAO INVALIDA";
+                    status = "OK";
+                    message = "Item do carrinho removido com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     break;
-                        
+                default:
+                    throw new AssertionError();
             }
         }catch(SQLException e){
             e.printStackTrace(System.err);
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Inserir Jogo";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-        }catch(ParseException e){
-            e.printStackTrace(System.err);
-            System.out.println("Erro data mal formatada!");
-            status = "Erro: Inserir Jogo";
-            message = "Erro relacionado a data, data mal formatada! (ParseException)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
             response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
         }catch(Exception e){
             e.printStackTrace(System.err);

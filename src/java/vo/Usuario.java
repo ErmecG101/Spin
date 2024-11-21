@@ -96,6 +96,11 @@ public class Usuario {
     public void setDtAtualizado(Date dtAtualizado) {
         this.dtAtualizado = dtAtualizado;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "CodigoUsuario=" + CodigoUsuario + ", nome=" + nome + ", senha=" + senha + ", email=" + email + ", dtNasc=" + dtNasc + ", dtCriado=" + dtCriado + ", dtAtualizado=" + dtAtualizado + '}';
+    }
     
     
 }

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import service.Conexao;
 
 /**
  *
@@ -32,6 +33,9 @@ public abstract class DAOGenerics<T> {
         if(stmt != null && !stmt.isClosed()){
             stmt.close();
             stmt = null;
+        }
+        if(!Conexao.conexao.isClosed()){
+            Conexao.conexao.close();
         }
     }
 }

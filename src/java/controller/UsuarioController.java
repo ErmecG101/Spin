@@ -72,7 +72,7 @@ public class UsuarioController extends HttpServlet {
                     request.getSession(true).setAttribute("spin_user_logged_in_object", u);
                     status = "OK";
                     message = "Login efetuado com sucesso!";
-                    if(request.getParameter("url").equals("index_release.jsp"))
+                    if(request.getParameter("url").equals("index.jsp"))
                         response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     else
                         response.sendRedirect("./"+request.getParameter("url")+"&status="+status+"&message="+message);
@@ -81,7 +81,7 @@ public class UsuarioController extends HttpServlet {
                     request.getSession().invalidate();
                     status = "OK";
                     message = "Logoff realizado com sucesso!";
-                    response.sendRedirect("./index_release.jsp?status="+status+"&message="+message);
+                    response.sendRedirect("./index.jsp?status="+status+"&message="+message);
                     break;
                 default:
                     status = "Erro: Acao Inválida";

@@ -116,6 +116,11 @@ public class Jogo {
     public void setDtAtualizacao(Date dtAtualizacao) {
         this.dtAtualizacao = dtAtualizacao;
     }
+
+    @Override
+    public String toString() {
+        return "Jogo{" + "codigoJogo=" + codigoJogo + ", nome=" + nome + ", valor=" + valor + ", publicadoPor=" + publicadoPor + ", desenvolvedora=" + desenvolvedora + ", dataLancamento=" + dataLancamento + ", capa=" + capa + ", dtCriacao=" + dtCriacao + ", dtAtualizacao=" + dtAtualizacao + '}';
+    }
     
     
 }

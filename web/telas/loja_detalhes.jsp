@@ -10,13 +10,19 @@
 
 <% 
     JogoDAO jDao = new JogoDAO();
-    Jogo jogo = jDao.selectOne(Integer.parseInt(request.getParameter("codigo_jogo")));
+    Jogo jogo;
+    if(request.getParameter("codigo_jogo") != null && !request.getParameter("codigo_jogo").isEmpty()){
+        jogo = jDao.selectOne(Integer.parseInt(request.getParameter("codigo_jogo")));
+    }else{
+        jogo = null;
+    }
 %>
 
 <!DOCTYPE html>
 <html>
     <jsp:include page="../generics/header_config.jsp"/>
     <body>
+        <% if(jogo != null){ %>
         <form method="POST" action="/Spin/JogoController?acao=2">
             <div class="container-fluid">
                 <div class="row">
@@ -32,6 +38,12 @@
                 </div>
             </div>
         </form>
+        <%} else { %>
+        <div class="mx-auto text-center">
+            <i class="bi bi-question-circle-fill" style="font-size: 18rem;"></i>
+            <h3>Ops! ocorreu um erro ao tentar carregar a página!</h3>
+        </div>
+        <%}%>
     </body>
     
     <style>

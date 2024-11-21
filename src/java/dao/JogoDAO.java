@@ -108,4 +108,22 @@ public class JogoDAO extends DAOGenerics<Jogo>{
         }
     }
     
+    public List<Jogo> selectAllBySearch(String name) throws SQLException, ClassNotFoundException {
+        try{
+            List<Jogo> list = new ArrayList<>();
+            String sql = "select * from jogos where nome like ?";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            stmt.setString(1, "%"+name+"%");
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                list.add(new Jogo(rs));
+            }
+            
+            return list;
+        }finally{
+            closeDb();
+        }
+    }
+    
 }

@@ -4,6 +4,8 @@
     Author     : Otavio
 --%>
 
+<%@page import="dao.JogoDAO"%>
+<%@page import="vo.Jogo"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Base64"%>
@@ -28,9 +30,24 @@
     if(u != null && u.getCodigoUsuario() > 0)
         itensCarrinho = new CompraCarrinhoDAO().selectAllByUser(u.getCodigoUsuario());
     else
-        itensCarrinho = new ArrayList<CompraCarrinho>();
+        itensCarrinho = new ArrayList<>();
+    session.setAttribute("itens_carrinho_spin", itensCarrinho);
     String uri;
     String pageName;
+    String[] urlParts = request.getRequestURI().split("/");
+    int siteHomePos = 0;
+    for(int i = 0; i<urlParts.length; i++){
+        if(urlParts[i].equals("Spin")){
+            siteHomePos = i;
+            break;
+        }
+    }
+    StringBuilder pageUrl = new StringBuilder();
+    for(int i = siteHomePos+1; i< urlParts.length; i++){
+        pageUrl.append(urlParts[i]);
+        if(i < urlParts.length-1)
+            pageUrl.append("/");
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -54,7 +71,7 @@
                         <a class="nav-link <%
                                 uri = request.getRequestURI();
                                 pageName = uri.substring(uri.lastIndexOf("/")+1);
-                                if(pageName.contains("index")){%> <%= "active" %> <%}%> aria-current="page" href="/Spin/index_release.jsp">Home</a>
+                                if(pageName.contains("index")){%> <%= "active" %> <%}%> aria-current="page" href="/Spin/index.jsp">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <%
@@ -70,7 +87,8 @@
                     </li>
                 </ul>
                     <form class="d-flex" method="GET" action="/Spin/telas/loja.jsp" role="search" style="margin-right: 10px;">
-                        <input class="form-control me-2" type="search" id="search" name="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control me-2" type="search" id="search" name="search" placeholder="Search" aria-label="Search"
+                               value="<%= request.getParameter("search") != null ? request.getParameter("search") : ""%>">
                         <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
                     </form>
                     <label class="nav_text" style="font-size: 20px; margin-right: 10px">|</label>
@@ -127,21 +145,38 @@
 
                 </span>
                         <span class="nav-text dropdown" style="margin-left: 10px">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                         <i class="bi bi-cart-fill"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg-end" style="max-height: 400px; width: 400px; overflow-y: scroll;">
                             <% if (u == null || u.getCodigoUsuario() == 0) {%>
                             <li><a class="dropdown-item" href="/Spin/telas/login.jsp">Login necessário para listar items no seu carrinho</a></li>
                             <%}else{ 
-                            for(CompraCarrinho item : itensCarrinho){
+                            if(!itensCarrinho.isEmpty()){
                             %>
-                            <h2><%= item.getCodigoCompraCarrinho()%></h2>
+                            <div class="list-group">
+                            <%
+                            for(CompraCarrinho item : itensCarrinho){
+                                Jogo jogoCarrinho = new JogoDAO().selectOne(item.getJogo().getCodigoJogo());
+                            %>
+                            <form method="POST" action="/Spin/CompraCarrinhoController?acao=1">
+                                <a class="list-group-item" aria-current="true">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1"><%=jogoCarrinho.getNome() %></h5>
+                                        <button class="btn" name="item_to_delete" value="<%= item.getCodigoCompraCarrinho() %>"><i class="bi bi-trash-fill"></i></button>
+                                    </div>
+                                    <p class="mb-1"><%= "R$ "+jogoCarrinho.getValor() %></p>
+                                    <input type="hidden" name="url" value="<%= pageUrl.toString() %>"/>
+                                    <small><%= "Desenvolvida por: "+jogoCarrinho.getDesenvolvedora() %></small>
+                                </a>
+                            </form>
                             <%}%>
-                            
+                            </div>
                             <li><hr class="dropdown-divider"></li>
-                            <li><span class="dropdown-item-text"><div class="row"><button class="btn">Ver Mais</button></div></span></li>
-                            <%} %>
+                            <li><span class="dropdown-item-text"><div class="row"><a class="btn" href="/Spin/telas/carrinho_detalhes.jsp">Ver Mais</a></div></span></li>
+                            <%} else{ %>
+                            <li><span class="dropdown-item-text">Nenhum item em seu carrinho!</span></li>
+                            <%}} %>
                         </ul>
                 </span>
             </div>

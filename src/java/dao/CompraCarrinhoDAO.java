@@ -37,7 +37,19 @@ public class CompraCarrinhoDAO extends DAOGenerics<CompraCarrinho>{
 
     @Override
     public void deleteOne(int codigo) throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            String sql = "delete from compra_carrinho where codigo_compra_carrinho = ?";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            stmt.setInt(1, codigo);
+            
+            int result = stmt.executeUpdate();
+            if(result <= 0)
+                throw new SQLException("Erro ao deletar o item do carrinho do cliente!");
+            else
+                System.out.println("Item deletado com sucesso do carrinho");
+        }finally{
+            closeDb();
+        }
     }
 
     @Override
@@ -47,7 +59,19 @@ public class CompraCarrinhoDAO extends DAOGenerics<CompraCarrinho>{
 
     @Override
     public CompraCarrinho selectOne(int codigo) throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            String sql = "select * from compra_carrinho where codigo_compra_carrinho = ?";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            stmt.setInt(1, codigo);
+            
+            rs = stmt.executeQuery();
+            if(rs.next())
+                return new CompraCarrinho(rs);
+            else
+                return null;
+        }finally{
+            closeDb();
+        }
     }
 
     @Override
@@ -67,6 +91,21 @@ public class CompraCarrinhoDAO extends DAOGenerics<CompraCarrinho>{
                 result.add(new CompraCarrinho(rs));
             
             return result;
+            
+        }finally{
+            closeDb();
+        }
+    }
+    
+    public boolean alreadyInCart(int idUser, int idJogo) throws SQLException, ClassNotFoundException{
+        try{
+            String sql = "select * from compra_carrinho where cod_usuario = ? and cod_jogo = ?";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            stmt.setInt(1, idUser);
+            stmt.setInt(2, idJogo);
+            
+            rs = stmt.executeQuery();
+            return rs.next();
             
         }finally{
             closeDb();

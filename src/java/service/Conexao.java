@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * @author arman
  */
 public class Conexao {
-    private static Connection conexao;
+    public static Connection conexao;
 
     public static void openConnection() throws ClassNotFoundException, SQLException{
         Class.forName("com.mysql.cj.jdbc.Driver");

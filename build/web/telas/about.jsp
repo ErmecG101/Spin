@@ -10,7 +10,7 @@
     <jsp:include page="../generics/header_config.jsp"/>
     <body>
         <div class="mx-auto text-center" style="width: 30%">  
-            <img height="128" width="128" src="/Spin/icons/material/info_96dp_E8EAED_FILL1_wght400_GRAD0_opsz48.svg">
+            <i class="bi bi-info-circle-fill" style="font-size: 18rem;"></i>
         <p style="text-align:center">
 
                 Esta página é um trabalho de faculdade (FATEC de Ourinhos) feito
@@ -19,6 +19,7 @@
                 
                 ass: Grupo oferecedor da plataforma SPIN
         </p>
+        <p>Versão: 0.18</p>
         </div>
     </body>
 </html>
