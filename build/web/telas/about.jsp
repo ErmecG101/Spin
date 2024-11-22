@@ -19,7 +19,7 @@
                 
                 ass: Grupo oferecedor da plataforma SPIN
         </p>
-        <p>Versão: 0.18</p>
+        <p>Versão: 0.20</p>
         </div>
     </body>
 </html>

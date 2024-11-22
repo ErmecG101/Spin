@@ -80,10 +80,16 @@
                                 if(pageName.contains("loja")){%> <%= "active" %> <%}%>" href="/Spin/telas/loja.jsp">Loja</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Biblioteca</a>
+                        <a class="nav-link <%
+                                uri = request.getRequestURI();
+                                pageName = uri.substring(uri.lastIndexOf("/")+1);
+                                if(pageName.contains("biblioteca")){%> <%= "active" %> <%}%>" href="/Spin/telas/biblioteca.jsp">Biblioteca</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Configurações</a>
+                        <a class="nav-link <%
+                                uri = request.getRequestURI();
+                                pageName = uri.substring(uri.lastIndexOf("/")+1);
+                                if(pageName.contains("configuracoes")){%> <%= "active" %> <%}%>" href="/Spin/telas/configuracoes.jsp">Configurações</a>
                     </li>
                 </ul>
                     <form class="d-flex" method="GET" action="/Spin/telas/loja.jsp" role="search" style="margin-right: 10px;">
@@ -134,9 +140,9 @@
                         </ul>
                         <% }else{ %>
                         <ul class="dropdown-menu dropdown-menu-lg-end">
-                            <li><a class="dropdown-item disabled" href="./telas/login.jsp">Configurações</a></li>
+                            <li><a class="dropdown-item" href="/Spin/telas/configuracoes.jsp">Configurações</a></li>
                             <li><a class="dropdown-item disabled" href="./telas/login.jsp">Compras</a></li>
-                            <li><a class="dropdown-item disabled" href="./telas/login.jsp">Biblioteca</a></li>
+                            <li><a class="dropdown-item" href="/Spin/telas/biblioteca.jsp">Biblioteca</a></li>
                             <li><a class="dropdown-item" href="/Spin/telas/about.jsp">Sobre</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" id="logoff" href="/Spin/UsuarioController?acao=3">Log-off</a></li>
@@ -147,6 +153,7 @@
                         <span class="nav-text dropdown" style="margin-left: 10px">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                         <i class="bi bi-cart-fill"></i>
+                        <span class="badge text-bg-primary rounded-pill"><%= itensCarrinho.size() %></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg-end" style="max-height: 400px; width: 400px; overflow-y: scroll;">
                             <% if (u == null || u.getCodigoUsuario() == 0) {%>

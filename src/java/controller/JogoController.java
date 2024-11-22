@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import vo.CompraCarrinho;
 import vo.Usuario;
 import dao.CompraCarrinhoDAO;
+import dao.JogosAdquiridosDAO;
 import java.util.List;
 /**
  *
@@ -79,6 +80,12 @@ public class JogoController extends HttpServlet {
                     if(ccDao.alreadyInCart(u.getCodigoUsuario(), jogo.getCodigoJogo())){
                         status="Alerta";
                         message="Jogo já no seu carrinho.";
+                        response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+status+"&message="+message);
+                        break;
+                    }
+                    if(new JogosAdquiridosDAO().alreadyInLibrary(u.getCodigoUsuario(), jogo.getCodigoJogo())){
+                        status="Alerta";
+                        message="Jogo já está na sua biblioteca.";
                         response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+status+"&message="+message);
                         break;
                     }

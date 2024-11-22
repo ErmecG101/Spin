@@ -6,6 +6,7 @@ package dao;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import service.Conexao;
 import vo.PagamentoMetodo;
@@ -56,7 +57,19 @@ public class PagamentoMetodoDAO extends DAOGenerics<PagamentoMetodo> {
 
     @Override
     public List<PagamentoMetodo> selectAll() throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            List<PagamentoMetodo> result = new ArrayList<>();
+            String sql = "select * from pagamentos_metodos";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            
+            rs = stmt.executeQuery();
+            while(rs.next())
+                result.add(new PagamentoMetodo(rs));
+            
+            return result;
+        }finally{
+            closeDb();
+        }
     }
     
 }

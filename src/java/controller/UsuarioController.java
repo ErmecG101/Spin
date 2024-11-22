@@ -72,7 +72,7 @@ public class UsuarioController extends HttpServlet {
                     request.getSession(true).setAttribute("spin_user_logged_in_object", u);
                     status = "OK";
                     message = "Login efetuado com sucesso!";
-                    if(request.getParameter("url").equals("index.jsp"))
+                    if(request.getParameter("url").equals("index.jsp") || request.getParameter("url").contains("configuracoes"))
                         response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
                     else
                         response.sendRedirect("./"+request.getParameter("url")+"&status="+status+"&message="+message);

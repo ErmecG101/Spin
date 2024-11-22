@@ -4,6 +4,9 @@
  */
 package vo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author arman
@@ -13,6 +16,12 @@ public class JogosAdquiridos {
     private Usuario usuario;
     private Jogo jogo;
 
+    public JogosAdquiridos(ResultSet rs) throws SQLException{
+        this.codigoJogosAdquiridos = rs.getInt("codigo_jogos_adiquiridos");
+        this.usuario = new Usuario(rs.getInt("cod_usuario"));
+        this.jogo = new Jogo(rs.getInt("cod_jogo"));
+    }
+    
     public JogosAdquiridos() {
     }
 

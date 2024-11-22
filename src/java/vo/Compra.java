@@ -18,6 +18,12 @@ public class Compra {
 
     public Compra() {
     }
+
+    public Compra(int codigoCompra) {
+        this.codigoCompra = codigoCompra;
+    }
+    
+    
     
     public int getCodigoCompra() {
         return codigoCompra;

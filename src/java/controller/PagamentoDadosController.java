@@ -4,6 +4,9 @@
  */
 package controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dao.PagamentoDadosDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,6 +39,10 @@ public class PagamentoDadosController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PagamentoDados pD;
+        Usuario u;
+        PagamentoDadosDAO pDDao;
+        JsonObject dadosCompra;
         String status = "";
         String message = "";
         response.setContentType("text/html;charset=UTF-8");
@@ -43,19 +50,63 @@ public class PagamentoDadosController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             int operacao = Integer.parseInt(request.getParameter("acao"));
             switch(operacao){
-                case 1://InsertOne()
-                    PagamentoDados pD = new PagamentoDados();
-                    Usuario u = new Usuario();
+                case 1://InsertOne() (DEBUG)
+                    pD = new PagamentoDados();
+                    u = new Usuario();
                     u.setCodigoUsuario(Integer.parseInt(request.getParameter("usuario")));
                     pD.setUsuario(u);
                     pD.setDadosCompra(request.getParameter("dadosCompra"));
-                    PagamentoDadosDAO pDDao = new PagamentoDadosDAO();
+                    pDDao = new PagamentoDadosDAO();
                     pDDao.insertOne(pD);
                     
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     status = "OK";
                     message = "Dados de Pagamento cadastrados com sucesso!";
                     response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    break;
+                case 2://CadastrarPagamentoDados
+                    pD = new PagamentoDados();
+                    u = (Usuario) request.getSession(true).getAttribute("spin_user_logged_in_object");
+                    pD.setUsuario(u);
+                    dadosCompra = new JsonObject();
+                    dadosCompra.addProperty("identificacao_dados", request.getParameter("ident_dados"));
+                    dadosCompra.addProperty("numero_cartao", request.getParameter("num_cartao"));
+                    dadosCompra.addProperty("nome_tit_cartao", request.getParameter("nom_tit_cartao"));
+                    dadosCompra.addProperty("validade_cartao", request.getParameter("expiry-month")+"/"+request.getParameter("expiry-year"));
+                    pD.setDadosCompra(new Gson().toJson(dadosCompra));
+                    
+                    pDDao = new PagamentoDadosDAO();
+                    pDDao.insertOne(pD);
+                    status = "OK";
+                    message = "Dados de Pagamento cadastrados com sucesso!";
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    break;
+                case 3://EditarPagamentoDados
+                    pD = new PagamentoDados();
+                    u = (Usuario) request.getSession(true).getAttribute("spin_user_logged_in_object");
+                    pD.setUsuario(u);
+                    dadosCompra = new JsonObject();
+                    dadosCompra.addProperty("identificacao_dados", request.getParameter("ident_dados"));
+                    dadosCompra.addProperty("numero_cartao", request.getParameter("num_cartao"));
+                    dadosCompra.addProperty("nome_tit_cartao", request.getParameter("nom_tit_cartao"));
+                    dadosCompra.addProperty("validade_cartao", request.getParameter("expiry-month")+"/"+request.getParameter("expiry-year"));
+                    pD.setDadosCompra(new Gson().toJson(dadosCompra));
+                    
+                    pDDao = new PagamentoDadosDAO();
+                    pDDao.updateOne(pD);
+                    status = "OK";
+                    message = "Dados de Pagamento atualizados com sucesso!";
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    break;
+                case 4://DeletarPagamentoDados
+                    int row_to_delete = Integer.parseInt(request.getParameter("row_to_delete"));
+                    pDDao = new PagamentoDadosDAO();
+                    pDDao.deleteOne(row_to_delete);
+                    
+                    status = "OK";
+                    message = "Dados de Pagamento apagados com sucesso!";
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    
                     break;
                 default:
                     status = "Erro: Dados de Pagamento";

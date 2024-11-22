@@ -20,6 +20,12 @@ public class Pagamento {
 
     public Pagamento() {
     }
+
+    public Pagamento(int codPagamento) {
+        this.codPagamento = codPagamento;
+    }
+    
+    
     
     public int getCodPagamento() {
         return codPagamento;

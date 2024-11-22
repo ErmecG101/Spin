@@ -4,6 +4,9 @@
  */
 package vo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author arman
@@ -13,6 +16,17 @@ public class PagamentoMetodo {
     private String descricao;
 
     public PagamentoMetodo() {
+    }
+
+    public PagamentoMetodo(int codMetodoPagamento) {
+        this.codMetodoPagamento = codMetodoPagamento;
+    }
+    
+    
+    
+    public PagamentoMetodo(ResultSet rs) throws SQLException {
+        this.codMetodoPagamento = rs.getInt("cod_metodo_pagamento");
+        this.descricao = rs.getString("descricao");
     }
     
     public int getCodMetodoPagamento() {

@@ -10,7 +10,7 @@ package vo;
  */
 public class LigCarrinhoCompra {
     private int codigoLigCarrinhoCompra;
-    private CompraCarrinho compraCarrinho;
+    private Jogo jogo;
     private Compra compra;
 
     public int getCodigoLigCarrinhoCompra() {
@@ -21,12 +21,12 @@ public class LigCarrinhoCompra {
         this.codigoLigCarrinhoCompra = codigoLigCarrinhoCompra;
     }
 
-    public CompraCarrinho getCompraCarrinho() {
-        return compraCarrinho;
+    public Jogo getJogo() {
+        return jogo;
     }
 
-    public void setCompraCarrinho(CompraCarrinho compraCarrinho) {
-        this.compraCarrinho = compraCarrinho;
+    public void setJogo(Jogo jogo) {
+        this.jogo = jogo;
     }
 
     public Compra getCompra() {
