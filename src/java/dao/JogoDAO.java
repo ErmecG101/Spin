@@ -126,4 +126,23 @@ public class JogoDAO extends DAOGenerics<Jogo>{
         }
     }
     
+    public List<Jogo> selectAllByCompra(int compraId) throws SQLException, ClassNotFoundException{
+        try{
+            List<Jogo> list = new ArrayList<>();
+            String sql = "select j.* from compras c \n" +
+                "inner join lig_carrinho_compra cc on cc.cod_compra = c.codigo_compra \n" +
+                "inner join jogos j on j.codigo_jogo = cc.cod_jogo \n"+
+                "where c.codigo_compra = ?";
+            
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            stmt.setInt(1, compraId);
+            rs = stmt.executeQuery();
+            while(rs.next())
+                list.add(new Jogo(rs));
+            return list;
+        }finally{
+            closeDb();
+        }
+    }
+    
 }

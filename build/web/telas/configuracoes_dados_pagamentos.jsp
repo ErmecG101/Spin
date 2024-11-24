@@ -88,8 +88,8 @@
                           <input value="<%= pagamentoDadosAEditar == null ? "" : jsonEditar.getAsJsonObject().get("identificacao_dados").getAsString()  %>" type="text" value="" class="form-control" id="ident_dados" name="ident_dados" required>
                         </div>
                         <div class="mb-3">
-                          <label for="exampleInputPassword1" class="form-label">Numero do Cartão</label>
-                          <input value="<%= pagamentoDadosAEditar == null ? "" : jsonEditar.getAsJsonObject().get("numero_cartao").getAsString()  %>" type="text" maxlength="19" placeholder="1234 5678 9012 3456" class="form-control" id="num_cartao" name="num_cartao" required>
+                            <label for="exampleInputPassword1" class="form-label">Numero do Cartão</label>
+                            <input onkeypress="return applyCardNumberMask(event)" value="<%= pagamentoDadosAEditar == null ? "" : jsonEditar.getAsJsonObject().get("numero_cartao").getAsString()  %>" type="text" maxlength="19" placeholder="1234 5678 9012 3456" class="form-control" id="num_cartao" name="num_cartao" required>
                         </div>
                         <div class="mb-3">
                             <div class="row">
@@ -154,5 +154,33 @@
             padding-right: 8px;
             text-align: center;
         }
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
     </style>
+    
+    <script type="text/javascript">
+        function applyCardNumberMask(e){
+            var field = document.getElementById("num_cartao");
+            
+            if(window.event) { // IE                  
+                keynum = e.keyCode;
+              } else if(e.which){ // Netscape/Firefox/Opera                 
+                keynum = e.which;
+              }
+
+//             alert(String.fromCharCode(keynum));
+             let keyPressed = String.fromCharCode(keynum);
+             if(field.value.length === 4 || field.value.length === 9 || field.value.length === 14)
+                 field.value = field.value + " ";
+        }
+    </script>
 </html>

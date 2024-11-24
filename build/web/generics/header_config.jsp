@@ -13,8 +13,8 @@
 <%@page import="vo.Usuario"%>
 <%@page import="vo.CompraCarrinho"%>
 <%@page import="dao.CompraCarrinhoDAO"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
+<%
     //Cookie[] cookies = request.getCookies();
     
     Usuario u = (Usuario) request.getSession(true).getAttribute("spin_user_logged_in_object");
@@ -71,7 +71,7 @@
                         <a class="nav-link <%
                                 uri = request.getRequestURI();
                                 pageName = uri.substring(uri.lastIndexOf("/")+1);
-                                if(pageName.contains("index")){%> <%= "active" %> <%}%> aria-current="page" href="/Spin/index.jsp">Home</a>
+                                if(pageName.contains("index") || pageName.isEmpty()){%> <%= "active" %> <%}%> aria-current="page" href="/Spin/index.jsp">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <%
@@ -141,7 +141,7 @@
                         <% }else{ %>
                         <ul class="dropdown-menu dropdown-menu-lg-end">
                             <li><a class="dropdown-item" href="/Spin/telas/configuracoes.jsp">Configurações</a></li>
-                            <li><a class="dropdown-item disabled" href="./telas/login.jsp">Compras</a></li>
+                            <li><a class="dropdown-item" href="/Spin/telas/configuracoes_compras.jsp">Compras</a></li>
                             <li><a class="dropdown-item" href="/Spin/telas/biblioteca.jsp">Biblioteca</a></li>
                             <li><a class="dropdown-item" href="/Spin/telas/about.jsp">Sobre</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -155,7 +155,7 @@
                         <i class="bi bi-cart-fill"></i>
                         <span class="badge text-bg-primary rounded-pill"><%= itensCarrinho.size() %></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-lg-end" style="max-height: 400px; width: 400px; overflow-y: scroll;">
+                    <ul class="dropdown-menu dropdown-menu-lg-end remove-scroll" style="max-height: 400px; width: 400px; overflow-y: scroll;">
                             <% if (u == null || u.getCodigoUsuario() == 0) {%>
                             <li><a class="dropdown-item" href="/Spin/telas/login.jsp">Login necessário para listar items no seu carrinho</a></li>
                             <%}else{ 
@@ -172,7 +172,7 @@
                                         <h5 class="mb-1"><%=jogoCarrinho.getNome() %></h5>
                                         <button class="btn" name="item_to_delete" value="<%= item.getCodigoCompraCarrinho() %>"><i class="bi bi-trash-fill"></i></button>
                                     </div>
-                                    <p class="mb-1"><%= "R$ "+jogoCarrinho.getValor() %></p>
+                                    <p class="mb-1"><%= String.format("R$ %.02f", jogoCarrinho.getValor()) %></p>
                                     <input type="hidden" name="url" value="<%= pageUrl.toString() %>"/>
                                     <small><%= "Desenvolvida por: "+jogoCarrinho.getDesenvolvedora() %></small>
                                 </a>
@@ -218,6 +218,7 @@
 //            });
 //        }
         window.onload = function(){
+        setTheme(getPreferredTheme());
         var url_string = window.location.href;
         console.log(url_string);
         var url = new URL(url_string);
@@ -230,8 +231,6 @@
             showToast(status, message);
         else
             console.log("Sem Mensagens a exibir."); 
-        
-            setTheme(getPreferredTheme())
         }
 
         function showToast(status, message){
@@ -285,5 +284,15 @@
           }
         }
     </script>
+    
+    <style>
+        .remove-scroll{
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none; 
+        }
+        .remove-scroll::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 
 </html>

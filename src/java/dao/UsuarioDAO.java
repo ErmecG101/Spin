@@ -29,6 +29,9 @@ public class UsuarioDAO extends DAOGenerics<Usuario>{
             stmt.setString(3, obj.getEmail());
             stmt.setDate(4, new Date(obj.getDtNasc().getTime()));
             
+            System.out.println("NOME RECEBIDO: "+obj.getNome());
+            System.out.println("query: "+stmt);
+            
             int result = stmt.executeUpdate();
             if(result <= 0)
                 throw new SQLException("Insert executed but no rows returned. (Usuario.insertOne)");

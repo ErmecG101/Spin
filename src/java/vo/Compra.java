@@ -4,6 +4,8 @@
  */
 package vo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -16,6 +18,15 @@ public class Compra {
     private Date dataCriado;
     private Date dataAtualizado;
 
+    public Compra(ResultSet rs) throws SQLException {
+        this.codigoCompra = rs.getInt("codigo_compra");
+        this.pagamento = new Pagamento(rs.getInt("cod_pagamento"));
+        this.dataCriado = new Date(rs.getDate("dt_criado").getTime());
+        this.dataAtualizado = new Date(rs.getDate("dt_atualizado").getTime());;
+    }
+
+    
+    
     public Compra() {
     }
 

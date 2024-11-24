@@ -18,6 +18,8 @@ import vo.Jogo;
 import vo.CompraCarrinho;
 import vo.Usuario;
 import dao.CompraCarrinhoDAO;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -41,6 +43,8 @@ public class CompraCarrinhoController extends HttpServlet {
         String status = "";
         String message = "";
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             int operacao = Integer.parseInt(request.getParameter("acao"));
             switch (operacao) {
@@ -53,7 +57,7 @@ public class CompraCarrinhoController extends HttpServlet {
                     request.getSession().setAttribute("itens_carrinho_spin", itensCarrinho);
                     status = "OK";
                     message = "Item do carrinho removido com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 default:
                     throw new AssertionError();
@@ -63,14 +67,14 @@ public class CompraCarrinhoController extends HttpServlet {
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Inserir Jogo";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
             status = "Erro: Inserir Jogo";
             message = "Erro Desconhecido (Exception)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }
     }
 

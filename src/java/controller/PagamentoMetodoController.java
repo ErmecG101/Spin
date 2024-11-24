@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import vo.PagamentoMetodo;
 import dao.PagamentoMetodoDAO;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 /**
@@ -36,6 +38,8 @@ public class PagamentoMetodoController extends HttpServlet {
             throws ServletException, IOException {
         String status = "";
         String message = "";
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -50,12 +54,12 @@ public class PagamentoMetodoController extends HttpServlet {
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     status = "OK";
                     message = "Método de pagamento cadastrado com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 default:
                     status = "Erro: Método de pagamento";
                     message = "Erro inesperado ocorreu: ACAO INVALIDA";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                         
             }
@@ -64,14 +68,14 @@ public class PagamentoMetodoController extends HttpServlet {
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Metodo de pagamento";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
             status = "Erro: Metodo de pagamento";
             message = "Erro Desconhecido (Exception)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }
     }
 

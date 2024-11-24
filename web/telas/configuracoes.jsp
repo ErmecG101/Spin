@@ -17,6 +17,12 @@
             <h2>Selecione qual configuração você deseja realizar: </h2>
             <br><br>
         <div class="list-group">
+            <a href="<%= u != null ? "/Spin/telas/configuracoes_compras.jsp" : "/Spin/telas/login.jsp?backurl=telas/configuracoes.jsp" %>" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Visualizar Compras</h5>
+                <i class="bi bi-caret-right-fill"></i>
+              </div>
+            </a>
             <a href="#" class="list-group-item disabled list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">Editar dados de Usuário</h5>

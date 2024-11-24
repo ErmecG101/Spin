@@ -21,6 +21,8 @@ import vo.CompraCarrinho;
 import vo.Usuario;
 import dao.CompraCarrinhoDAO;
 import dao.JogosAdquiridosDAO;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 /**
  *
@@ -42,6 +44,8 @@ public class JogoController extends HttpServlet {
             throws ServletException, IOException {
         String status = "";
         String message = "";
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             int operacao = Integer.parseInt(request.getParameter("acao"));
@@ -61,7 +65,7 @@ public class JogoController extends HttpServlet {
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     status="OK";
                     message="Jogo inserido com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 case 2://Add To Cart()
                     Jogo jogo = new JogoDAO().selectOne(Integer.parseInt(request.getParameter("action_add_jogo")));
@@ -72,7 +76,7 @@ public class JogoController extends HttpServlet {
                     if(u == null || u.getCodigoUsuario() <= 0){
                         status = "Aviso!";
                         message = "É necessário um login para adicionar o jogo ao carrinho.";
-                        response.sendRedirect("./telas/login.jsp?status="+status+"&message="+message+"&backurl=./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo());
+                        response.sendRedirect("./telas/login.jsp?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString())+"&backurl=./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo());
                         break;
                     }
                     cc.setUsuario(u);
@@ -80,13 +84,13 @@ public class JogoController extends HttpServlet {
                     if(ccDao.alreadyInCart(u.getCodigoUsuario(), jogo.getCodigoJogo())){
                         status="Alerta";
                         message="Jogo já no seu carrinho.";
-                        response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+status+"&message="+message);
+                        response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                         break;
                     }
                     if(new JogosAdquiridosDAO().alreadyInLibrary(u.getCodigoUsuario(), jogo.getCodigoJogo())){
                         status="Alerta";
                         message="Jogo já está na sua biblioteca.";
-                        response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+status+"&message="+message);
+                        response.sendRedirect("./telas/loja_detalhes.jsp?codigo_jogo="+jogo.getCodigoJogo()+"&status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                         break;
                     }
                     ccDao.insertOne(cc);
@@ -94,12 +98,12 @@ public class JogoController extends HttpServlet {
                     request.getSession().setAttribute("itens_carrinho_spin", itensCarrinho);
                     status="OK";
                     message="Item adicionado no carrinho com sucesso!";
-                    response.sendRedirect("./telas/loja.jsp?status="+status+"&message="+message);
+                    response.sendRedirect("./telas/loja.jsp?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 default:
                     status = "Erro: Inserir Jogo";
                     message = "Erro inesperado ocorreu: ACAO INVALIDA";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                         
             }
@@ -108,21 +112,21 @@ public class JogoController extends HttpServlet {
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Inserir Jogo";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(ParseException e){
             e.printStackTrace(System.err);
             System.out.println("Erro data mal formatada!");
             status = "Erro: Inserir Jogo";
             message = "Erro relacionado a data, data mal formatada! (ParseException)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
             status = "Erro: Inserir Jogo";
             message = "Erro Desconhecido (Exception)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }
     }
 

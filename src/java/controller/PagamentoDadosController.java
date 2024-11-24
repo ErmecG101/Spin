@@ -10,6 +10,8 @@ import com.google.gson.JsonObject;
 import dao.PagamentoDadosDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +47,8 @@ public class PagamentoDadosController extends HttpServlet {
         JsonObject dadosCompra;
         String status = "";
         String message = "";
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -62,7 +66,7 @@ public class PagamentoDadosController extends HttpServlet {
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     status = "OK";
                     message = "Dados de Pagamento cadastrados com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 case 2://CadastrarPagamentoDados
                     pD = new PagamentoDados();
@@ -79,7 +83,7 @@ public class PagamentoDadosController extends HttpServlet {
                     pDDao.insertOne(pD);
                     status = "OK";
                     message = "Dados de Pagamento cadastrados com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 case 3://EditarPagamentoDados
                     pD = new PagamentoDados();
@@ -96,7 +100,7 @@ public class PagamentoDadosController extends HttpServlet {
                     pDDao.updateOne(pD);
                     status = "OK";
                     message = "Dados de Pagamento atualizados com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 case 4://DeletarPagamentoDados
                     int row_to_delete = Integer.parseInt(request.getParameter("row_to_delete"));
@@ -105,13 +109,13 @@ public class PagamentoDadosController extends HttpServlet {
                     
                     status = "OK";
                     message = "Dados de Pagamento apagados com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     
                     break;
                 default:
                     status = "Erro: Dados de Pagamento";
                     message = "Erro inesperado ocorreu: ACAO INVALIDA";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                         
             }
@@ -120,14 +124,14 @@ public class PagamentoDadosController extends HttpServlet {
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Dados de Pagamento";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
             status = "Erro: Dados de Pagamento";
             message = "Erro Desconhecido (Exception)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }
     }
 

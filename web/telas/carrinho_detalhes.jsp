@@ -146,7 +146,7 @@
               document.getElementById('finalizar_compra').classList.add("disabled");
               formFields.innerHTML = `
                 <select onchange="updateFormFields(2)" name="select_dados_pagamento" id="select_dados_pagamento" class="form-select" aria-label="Default select example">
-                    <option selected disabled> -- Selecionar dados de Pagamento --</option>
+                    <option value="nao_selecionado" selected disabled> -- Selecionar dados de Pagamento --</option>
             <% List<PagamentoDados> listPagamentoDados = new PagamentoDadosDAO().selectAllByUser(u == null ? 0 : u.getCodigoUsuario());
             
             for(PagamentoDados pagamentoDado : listPagamentoDados){
@@ -162,13 +162,14 @@
                 <label for="cvc" class="form-label">CVC:</label>
                 </div>
                 <div class="col-auto">
-                <input id="cvc" maxlength="3" onKeyUp="updateFormFields(2)"  name="cvc" type="text" class="form-control">
+                <input id="cvc" maxlength="3" onKeyUp="updateFormFields(2)"  name="cvc" type="text" class="form-control" required>
                 </div>
                 </div>
               `;
             }
             }else if(option === 2){
-                if(document.getElementById("cvc") !== null && document.getElementById("cvc").value !== "")
+                if(document.getElementById("cvc") !== null && document.getElementById("cvc").value !== "" &&
+                        document.getElementById("select_dados_pagamento") !== null && document.getElementById("select_dados_pagamento").value !== "nao_selecionado")
                     document.getElementById('finalizar_compra').classList.remove("disabled");
         }
         

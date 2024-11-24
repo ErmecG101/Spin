@@ -12,6 +12,8 @@ import dao.LigCarrinhoCompraDAO;
 import dao.PagamentoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,8 @@ public class CompraController extends HttpServlet {
         Compra c;
         Pagamento pag;
         PagamentoDAO pagDao;
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             int operacao = Integer.parseInt(request.getParameter("acao"));
@@ -65,7 +69,7 @@ public class CompraController extends HttpServlet {
                     pag.setPagamentoDados(new PagamentoDados(Integer.parseInt(request.getParameter("select_dados_pagamento"))));
                     pag.setPagamentoMetodo(new PagamentoMetodo(Integer.parseInt(request.getParameter("metodo_pagamento"))));
                     List<CompraCarrinho> listItensCarrinho = new CompraCarrinhoDAO().selectAllByUser(u.getCodigoUsuario());
-                    int valorTotal = 0;
+                    double valorTotal = 0;
                     for(CompraCarrinho item : listItensCarrinho){
                         valorTotal += new JogoDAO().selectOne(item.getJogo().getCodigoJogo()).getValor();
                     }
@@ -97,7 +101,7 @@ public class CompraController extends HttpServlet {
                     
                     status = "OK";
                     message = "Compra realizada com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     
                     break;
                 default:
@@ -108,14 +112,14 @@ public class CompraController extends HttpServlet {
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Compra";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
             status = "Erro: Compra";
             message = "Erro Desconhecido (Exception)";
-            System.out.println("./"+request.getParameter("url")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }
     }
 

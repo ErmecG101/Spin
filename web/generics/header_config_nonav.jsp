@@ -4,7 +4,7 @@
     Author     : Otavio
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -52,7 +52,7 @@
         else
             console.log("Sem Mensagens a exibir."); 
         
-            setTheme(getPreferredTheme())
+            setTheme(getPreferredTheme());
         };
 
         function showToast(status, message){

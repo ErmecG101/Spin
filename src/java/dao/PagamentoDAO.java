@@ -56,7 +56,19 @@ public class PagamentoDAO extends DAOGenerics<Pagamento>{
 
     @Override
     public Pagamento selectOne(int codigo) throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            String sql = "select * from pagamentos where codigo_pagamento = ?";
+            stmt = Conexao.getConexao().prepareStatement(sql);
+            stmt.setInt(1, codigo);
+            
+            rs = stmt.executeQuery();
+            if(rs.next())
+                return new Pagamento(rs);
+            else
+                return null;
+        }finally{
+            closeDb();
+        }
     }
 
     @Override

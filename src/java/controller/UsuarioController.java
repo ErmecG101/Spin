@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import vo.Usuario;
 import dao.UsuarioDAO;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +41,8 @@ public class UsuarioController extends HttpServlet {
             throws ServletException, IOException {
         String status = "";
         String message = "";
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -58,7 +62,7 @@ public class UsuarioController extends HttpServlet {
 //                    response.sendRedirect("./index.jsp?status=OK&message=Usuario cadastrado com sucesso!");
                     status = "OK";
                     message = "Usuário cadastrado com sucesso!";
-                    response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 case 2://Login()
                     UsuarioDAO uDao = new UsuarioDAO();
@@ -66,27 +70,28 @@ public class UsuarioController extends HttpServlet {
                     if(u == null){
                         status = "Conta não encontrada";
                         message = "Uma conta com essas credenciais não foi encontrada, talvez você digitou a senha errada?";
-                        response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+                        response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                         break;
                     }
                     request.getSession(true).setAttribute("spin_user_logged_in_object", u);
                     status = "OK";
                     message = "Login efetuado com sucesso!";
-                    if(request.getParameter("url").equals("index.jsp") || request.getParameter("url").contains("configuracoes"))
-                        response.sendRedirect("./"+request.getParameter("url")+"?status="+status+"&message="+message);
+                    if(request.getParameter("url").equals("index.jsp") || request.getParameter("url").contains("configuracoes") ||
+                            request.getParameter("url").contains("biblioteca"))
+                        response.sendRedirect("./"+request.getParameter("url")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     else
-                        response.sendRedirect("./"+request.getParameter("url")+"&status="+status+"&message="+message);
+                        response.sendRedirect("./"+request.getParameter("url")+"&status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 case 3://logoff
                     request.getSession().invalidate();
                     status = "OK";
                     message = "Logoff realizado com sucesso!";
-                    response.sendRedirect("./index.jsp?status="+status+"&message="+message);
+                    response.sendRedirect("./index.jsp?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                 default:
                     status = "Erro: Acao Inválida";
                     message = "Erro inesperado ocorreu: ACAO INVALIDA";
-                    response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+                    response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
                     break;
                         
             }
@@ -95,21 +100,21 @@ public class UsuarioController extends HttpServlet {
             System.out.println("Erro ao tentar realizar uma operação SQL na requisição");
             status = "Erro: Inserir Usuario";
             message = "Erro relacionado a SQL da operação (SQLException)";
-            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(ParseException e){
             e.printStackTrace(System.err);
             System.out.println("Erro data mal formatada!");
             status = "Erro: Inserir Usuario";
             message = "Erro relacionado a data, data mal formatada! (ParseException)";
-            System.out.println("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("erroUrl")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }catch(Exception e){
             e.printStackTrace(System.err);
             System.out.println("Erro Desconhecido!");
             status = "Erro: Inserir Usuario";
             message = "Erro Desconhecido (Exception)";
-            System.out.println("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
-            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+status+"&message="+message);
+            System.out.println("./"+request.getParameter("erroUrl")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+            response.sendRedirect("./"+request.getParameter("erroUrl")+"?status="+URLEncoder.encode(status, StandardCharsets.UTF_8.toString())+"&message="+URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
         }
     }
 

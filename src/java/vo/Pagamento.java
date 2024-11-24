@@ -4,6 +4,8 @@
  */
 package vo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -25,7 +27,14 @@ public class Pagamento {
         this.codPagamento = codPagamento;
     }
     
-    
+    public Pagamento(ResultSet rs) throws SQLException{
+        this.codPagamento = rs.getInt("codigo_pagamento");
+        this.pagamentoMetodo = new PagamentoMetodo(rs.getInt("cod_pagamento_metodo"));
+        this.pagamentoDados = new PagamentoDados(rs.getInt("cod_pagamento_dados"));
+        this.valor = rs.getDouble("valor");
+        this.dtCriado = new Date(rs.getDate("dt_criado").getTime());
+        this.dtAtualizado = new Date(rs.getDate("dt_atualizado").getTime());
+    }
     
     public int getCodPagamento() {
         return codPagamento;
